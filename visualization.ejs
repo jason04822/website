@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Data Visualization</h1>
+    <a href="/admin">Back to Table Management</a> | <a href="/">Logout</a>
+    <canvas id="categoryChart" width="400" height="200"></canvas>
+
+    <script>
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        const data = <%- JSON.stringify(data) %>;
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.category || 'Uncategorized'),
+                datasets: [{
+                    label: 'Count per Category',
+                    data: data.map(d => d.count),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

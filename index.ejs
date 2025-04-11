@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Set Selector</title>
+</head>
+<body>
+    <h1>Select Your Tool Set</h1>
+    <form action="/filter" method="POST">
+        <label for="category">Theme:</label>
+        <select name="category" id="category" required>
+            <option value="">-- Select Theme --</option>
+            <% categories.forEach(cat => { %>
+                <option value="<%= cat.category %>" <%= selected && selected.category === cat.category ? 'selected' : '' %>><%= cat.category %></option>
+            <% }); %>
+        </select>
+
+        <label for="subtype">Subtheme:</label>
+        <select name="subtype" id="subtype" required>
+            <option value="">-- Select Subtheme --</option>
+            <% subtypes.forEach(sub => { %>
+                <option value="<%= sub.subtype %>" <%= selected && selected.subtype === sub.subtype ? 'selected' : '' %>><%= sub.subtype %></option>
+            <% }); %>
+        </select>
+
+        <button type="submit">Get Random Name</button>
+    </form>
+
+    <% if (randomName) { %>
+        <h2>Random Name: <%= randomName %></h2>
+        <p>Filter: <%= filter %></p>
+    <% } else if (filter) { %>
+        <p><%= filter %></p>
+    <% } %>
+    <a href="/login">Admin Login</a>
+</body>
+</html>

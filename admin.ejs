@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Table Management</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h1>Table Management</h1>
+    <a href="/admin/visualization">View Visualization</a> | <a href="/">Logout</a>
+
+    <!-- Filter Columns -->
+    <form action="/admin/filter" method="POST" style="float: right;">
+        <label>Filter Columns:</label>
+        <select name="columns" multiple>
+            <option value="id">ID</option>
+            <option value="name">Name</option>
+            <option value="category">Category</option>
+            <option value="subtype">Subtype</option>
+            <option value="created_at">Created At</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <!-- Search Rows -->
+    <form action="/admin/search" method="POST">
+        <input type="text" name="search" placeholder="Search..." value="<%= filter || '' %>">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Add Entry -->
+    <form action="/admin/add" method="POST">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="category" placeholder="Category" required>
+        <input type="text" name="subtype" placeholder="Subtype" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <!-- Table -->
+    <% if (tools.length > 0) { %>
+        <table>
+            <thead>
+                <tr>
+                    <% columns.forEach(col => { %>
+                        <th><%= col %></th>
+                    <% }); %>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% tools.forEach(tool => { %>
+                    <tr>
+                        <% columns.forEach(col => { %>
+                            <td><%= tool[col] %></td>
+                        <% }); %>
+                        <td>
+                            <form action="/admin/remove" method="POST" style="display:inline;">
+                                <input type="hidden" name="id" value="<%= tool.id %>">
+                                <button type="submit">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No data found.</p>
+    <% } %>
+</body>
+</html>
